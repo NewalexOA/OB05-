@@ -23,6 +23,7 @@ board_height = 20
 # Игровое поле
 board = [[0 for _ in range(board_width)] for _ in range(board_height)]
 
+<<<<<<< Updated upstream
 # Фигуры
 tetris_shapes = [
     [[1, 1, 1, 1]],
@@ -33,6 +34,15 @@ tetris_shapes = [
     [[1, 0, 0], [1, 1, 1]],
     [[0, 0, 1], [1, 1, 1]]
 ]
+=======
+while run:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        if event.type == pygame.MOUSEMOTION:
+            image_rect.x = event.pos[0] - 25
+            image_rect.y = event.pos[1] - 25
+>>>>>>> Stashed changes
 
 
 def new_piece():
