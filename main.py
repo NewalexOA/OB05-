@@ -37,7 +37,8 @@ def draw_block(x, y):
     pygame.draw.rect(screen, WHITE, (x * block_size, y * block_size, block_size, block_size), 1)
 
 def rotate_shape(shape):
-    return [[shape[y][x] for y in range(len(shape))] for x in range(len(shape[0]) - 1, -1, -1)]
+    """ Возвращает новую фигуру после поворота на 90 градусов по часовой стрелке. """
+    return [list(reversed(col)) for col in zip(*shape)]
 
 def check_collision(board, shape, offset):
     off_x, off_y = offset
@@ -76,36 +77,46 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        elif event.type == pygame.KEYDOWN:
-            new_x = piece_pos[0]
-            new_y = piece_pos[1]
-            if event.key == pygame.K_LEFT:
-                new_x -= 1
-            elif event.key == pygame.K_RIGHT:
-                new_x += 1
-            elif event.key == pygame.K_DOWN:
-                new_y += 1
 
-            if not check_collision(board, current_piece, (new_x, new_y)):
-                piece_pos[0] = new_x
-                piece_pos[1] = new_y
+    keys = pygame.key.get_pressed()
+    new_x = piece_pos[0]
+    new_y = piece_pos[1]
 
-        elif event.type == pygame.USEREVENT + 1:
-            new_y = piece_pos[1] + 1
-            if not check_collision(board, current_piece, (piece_pos[0], new_y)):
-                piece_pos[1] = new_y
-            else:
-                for y, row in enumerate(current_piece):
-                    for x, cell in enumerate(row):
-                        if cell:
-                            board[y + piece_pos[1]][x + piece_pos[0]] = 1
-                board = remove_line(board)
-                current_piece = new_piece()
-                piece_pos = [board_width // 2, 0]
+    if keys[pygame.K_LEFT]:
+        new_x -= 1
+    if keys[pygame.K_RIGHT]:
+        new_x += 1
+    if keys[pygame.K_DOWN]:
+        new_y += 1
+
+    # Обработка поворота фигуры
+    if keys[pygame.K_UP]:
+        rotated_piece = rotate_shape(current_piece)
+        if not check_collision(board, rotated_piece, piece_pos):
+            current_piece = rotated_piece
+
+    # Проверка на столкновения после перемещения
+    if not check_collision(board, current_piece, (new_x, new_y)):
+        piece_pos[0] = new_x
+        piece_pos[1] = new_y
+
+    # Событие автоматического опускания фигуры
+    if pygame.time.get_ticks() % 1000 < 50:  # Примерное время 1 секунда
+        new_y = piece_pos[1] + 1
+        if not check_collision(board, current_piece, (piece_pos[0], new_y)):
+            piece_pos[1] = new_y
+        else:
+            for y, row in enumerate(current_piece):
+                for x, cell in enumerate(row):
+                    if cell:
+                        board[y + piece_pos[1]][x + piece_pos[0]] = 1
+            board = remove_line(board)
+            current_piece = new_piece()
+            piece_pos = [board_width // 2, 0]
 
     draw_board(board, current_piece, piece_pos)
     pygame.display.flip()
-    pygame.time.wait(100)
+    pygame.time.wait(50)  # Контроль скорости игры
 
 pygame.quit()
 sys.exit()
