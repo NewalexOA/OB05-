@@ -69,11 +69,11 @@
    ```
 3. Клонируйте репозиторий:
    ```bash
-   git clone https://github.com/yourusername/tetris-game.git
+   git clone https://github.com/NewalexOA/OB05-PyGame_Traning.git
    ```
 4. Перейдите в папку с проектом:
    ```bash
-   cd tetris-game
+   cd OB05-PyGame_Traning
    ```
 5. Запустите игру:
    ```bash
@@ -146,11 +146,11 @@ This project is a classic Tetris game implemented using the Pygame library. The 
    ```
 3. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/tetris-game.git
+   git clone https://github.com/NewalexOA/OB05-PyGame_Traning.git
    ```
 4. Navigate to the project folder:
    ```bash
-   cd tetris-game
+   cd OB05-PyGame_Traning
    ```
 5. Run the game:
    ```bash
