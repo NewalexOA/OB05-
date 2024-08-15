@@ -28,6 +28,7 @@ tetris_shapes = [
     [[0, 0, 1], [1, 1, 1]]
 ]
 
+
 def new_piece():
     return random.choice(tetris_shapes)
 
@@ -36,9 +37,11 @@ def draw_block(x, y):
     pygame.draw.rect(screen, BLOCK_COLOR, (x * block_size, y * block_size, block_size, block_size))
     pygame.draw.rect(screen, WHITE, (x * block_size, y * block_size, block_size, block_size), 1)
 
+
 def rotate_shape(shape):
     """ Возвращает новую фигуру после поворота на 90 градусов по часовой стрелке. """
     return [list(reversed(col)) for col in zip(*shape)]
+
 
 def check_collision(board, shape, offset):
     off_x, off_y = offset
@@ -51,12 +54,14 @@ def check_collision(board, shape, offset):
                     return True
     return False
 
+
 def remove_line(board):
     new_board = [row for row in board if not all(row)]
     removed_lines = len(board) - len(new_board)
     for _ in range(removed_lines):
         new_board.insert(0, [0 for _ in range(board_width)])
     return new_board
+
 
 def draw_board(board, piece, piece_pos):
     screen.fill(BACKGROUND_COLOR)
@@ -67,6 +72,7 @@ def draw_board(board, piece, piece_pos):
         for x, cell in enumerate(row):
             if cell: draw_block(x + piece_pos[0], y + piece_pos[1])
     pygame.display.flip()
+
 
 pygame.time.set_timer(pygame.USEREVENT + 1, 1000)
 current_piece = new_piece()
